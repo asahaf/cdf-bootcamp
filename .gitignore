@@ -37,8 +37,8 @@ __pycache__/
 .DS_Store
 .env
 .venv
+.prod.env
+.test.env
 
 # Do not commit build folders for cdf-toolkit
 build/
-
-

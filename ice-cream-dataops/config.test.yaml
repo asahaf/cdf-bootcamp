@@ -1,0 +1,39 @@
+environment:
+  name: test
+  project: cdf-bootcamp-11-test
+  type: test
+  selected:
+    - modules/
+
+variables:
+  modules:
+    bootcamp:
+      CDF_PROJECT: cdf-bootcamp-11-test # ex. cdf-bootcamp-01-test
+      IDP_CLIENT_ID: ${IDP_CLIENT_ID} # replaced by .env
+      IDP_CLIENT_SECRET: ${IDP_CLIENT_SECRET} # replaced by .env
+      IDP_TENANT_ID: ${IDP_TENANT_ID} # replaced by .env
+      # This is related to the cluster where the CDF project is hosted.
+      CDF_URL: https://westeurope-1.cognitedata.com
+      IDP_SCOPES: https://westeurope-1.cognitedata.com/.default
+      # Groups
+      # OBJECT ID FOR TEST DATA DEVELOPER ENTRA GROUP
+      data_developer_source_id: dacff0ba-a9e2-4036-aeda-576eb1e76933
+      # OBJECT ID FOR TEST DATA PIPELINE OEE ENTRA GROUP
+      data_pipeline_oee_source_id: 2b1ca7c8-546a-41e0-8cef-346d9efe4179
+      # OBJECT ID FOR TEST ADMIN TK ENTRA GROUP
+      readwrite_source_id: c47d41b0-b07e-492f-8e9d-d781f5ed0bb6
+      # OBJECT ID FOR TEST ADMIN TK ENTRA GROUP
+      readonly_source_id: c47d41b0-b07e-492f-8e9d-d781f5ed0bb6
+      # OBJECT ID FOR TEST ADMIN TK ENTRA GROUP
+      icapi_extractors_source_id: 539802b7-7c3d-4b9b-800e-77b5ceda2fa5
+      # Client Ids
+      data_pipeline_oee_client_id: ${DATA_PIPELINE_OEE_CLIENT_ID} # replaced by .env
+      data_pipeline_oee_client_secret: ${DATA_PIPELINE_OEE_CLIENT_SECRET} # replaced by .env
+      icapi_extractors_client_id: ${ICAPI_EXTRACTORS_CLIENT_ID} # replaced by .env
+      icapi_extractors_client_secret: ${ICAPI_EXTRACTORS_CLIENT_SECRET} # replaced by .env
+
+      icapi_ds_external_id: ds_icapi
+
+      use_cases:
+        oee:
+          uc_oee_ds_external_id: ds_uc_oee
