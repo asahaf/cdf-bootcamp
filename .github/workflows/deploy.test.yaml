@@ -1,0 +1,62 @@
+name: TEST - Deploy Tool-kit Manifests
+
+on:
+  push:
+    branches:
+      - test
+
+env:
+  PYTHON_VERSION: "3.12"
+  TOOLKIT_ENV: "test"
+  TOOLKIT_VERSION: "0.3.0b4"
+  CDF_CLUSTER: westeurope-1
+  CDF_PROJECT: cdf-bootcamp-11-test
+  CDF_URL: https://westeurope-1.cognitedata.com
+  DATA_PIPELINE_OEE_CLIENT_ID: ${{ secrets.TEST_DATA_PIPELINE_OEE_CLIENT_ID }}
+  DATA_PIPELINE_OEE_CLIENT_SECRET: ${{ secrets.TEST_DATA_PIPELINE_OEE_CLIENT_SECRET }}
+  ICAPI_EXTRACTORS_CLIENT_ID: ${{ secrets.TEST_ICAPI_EXTRACTORS_CLIENT_ID }}
+  ICAPI_EXTRACTORS_CLIENT_SECRET: ${{ secrets.TEST_ICAPI_EXTRACTORS_CLIENT_SECRET }}
+  IDP_CLIENT_ID: ${{ secrets.TEST_IDP_CLIENT_ID }}
+  IDP_CLIENT_SECRET: ${{ secrets.TEST_IDP_CLIENT_SECRET }}
+  IDP_SCOPES: https://westeurope-1.cognitedata.com/.default
+  IDP_TENANT_ID: 16e3985b-ebe8-4e24-9da4-933e21a9fc81
+  IDP_TOKEN_URI: https://login.microsoftonline.com/16e3985b-ebe8-4e24-9da4-933e21a9fc81/oauth2/v2.0/token
+  LOGIN_FLOW: client_credentials
+
+jobs:
+  deploy-tk-manifests:
+    name: Deploy Tool-Kit manifests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: install deps
+        run: |
+          pip install "cognite-toolkit==${{ env.TOOLKIT_VERSION }}"
+
+      - name: build & deploy took-kit Manifests
+        env:
+          CDF_CLUSTER: ${{ env.CDF_CLUSTER }}
+          CDF_PROJECT: ${{ env.CDF_PROJECT }}
+          CDF_URL: ${{ env.CDF_URL }}
+          DATA_PIPELINE_OEE_CLIENT_ID: ${{ env.DATA_PIPELINE_OEE_CLIENT_ID }}
+          DATA_PIPELINE_OEE_CLIENT_SECRET: ${{ env.DATA_PIPELINE_OEE_CLIENT_SECRET }}
+          ICAPI_EXTRACTORS_CLIENT_ID: ${{ env.ICAPI_EXTRACTORS_CLIENT_ID }}
+          ICAPI_EXTRACTORS_CLIENT_SECRET: ${{ env.ICAPI_EXTRACTORS_CLIENT_SECRET }}
+          IDP_CLIENT_ID: ${{ env.IDP_CLIENT_ID }}
+          IDP_CLIENT_SECRET: ${{ env.IDP_CLIENT_SECRET }}
+          IDP_SCOPES: ${{ env.IDP_SCOPES }}
+          IDP_TENANT_ID: ${{ env.IDP_TENANT_ID }}
+          IDP_TOKEN_URI: ${{ env.IDP_TOKEN_URI }}
+          LOGIN_FLOW: ${{ env.LOGIN_FLOW }}
+        run: |
+          cdf-tk build --verbose --env ${{ env.TOOLKIT_ENV }} \
+          && cdf-tk deploy --verbose --env ${{ env.TOOLKIT_ENV }}
